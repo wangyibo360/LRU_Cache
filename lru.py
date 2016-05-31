@@ -180,6 +180,24 @@ class TwoWayLinkedList(object):
         print(output)
 
 
+class LRU_Cache_Iterator(object):
+
+    def __init__(self, cache):
+        self.linklist = cache.linklist
+        self.index = self.linklist.head
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if not self.index:
+            raise StopIteration
+        else:
+            node = self.index
+            self.index = self.index.next
+            return node
+
+
 class LRU_Cache(object):
 
     def __init__(self, capacity):
@@ -187,6 +205,9 @@ class LRU_Cache(object):
         self.size = 0
         self.table = {}
         self.linklist = TwoWayLinkedList()
+
+    def __iter__(self):
+        return LRU_Cache_Iterator(self)
 
     def get(self, node):
         key = node.key
